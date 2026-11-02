@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online shop</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="container header-wrap">
+        <a href="#" class="logo">onlineShop</a>
+
+        <a href="#cartSection">
+          <span>Корзина</span>
+          <span id="cartCount">0</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="catalog-section">
+        <div class="container catalog-wrap">
+          <div class="catalog-settings">
+            <label class="">
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Выберите продукт..."
+              />
+            </label>
+
+            <label class="">
+              <span>Категория продукта</span>
+              <select id="categoryFilter">
+                <option value="all">Все</option>
+                <option value="device">Техника</option>
+                <option value="accessories">Аксессуары</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="products" id="productsList"></div>
+        </div>
+      </section>
+      <section class="cart-section">
+        <div class="container cart-wrap">
+          <div class="cart__header">
+            <h2>Корзина <span id="cartTotalCount">0</span></h2>
+            <button type="button" id="clearCart">Очистить корзину</button>
+          </div>
+          <div class="cart-actions">
+            <label>
+              <input type="checkbox" id="selectAll" />
+              <span>Выбрать все товары</span>
+            </label>
+            <button type="button" id="removeSelected">
+              Удалить все выбранные
+            </button>
+          </div>
+
+          <div class="cart-list" id="cartList"></div>
+
+          <div class="cart-summary">
+            <div class="summary-item">
+              <span>Товаров в корзине</span>
+              <span id="totalCount">0</span>
+            </div>
+
+            <div class="summary-item">
+              <span>Выбрано товаров</span>
+              <span id="selectedCount">0</span>
+            </div>
+
+            <div class="summary-item">
+              <span>К оплате</span>
+              <span id="totalSum">0</span>
+            </div>
+
+            <button type="button" id="checkoutBtn">Оформить заказ</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
