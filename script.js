@@ -330,20 +330,20 @@ function renderCart() {
       minusBtn.className = "counter__btn";
       minusBtn.type = "button";
       minusBtn.textContent = "-";
-      minusBtn.dataset.action = "decrease-card";
+      minusBtn.dataset.action = "decrease-cart";
       minusBtn.dataset.productId = item.id;
 
       minusBtn.setAttribute("aria-label", "Умельшить кол-во: " + item.name);
 
       const quantity = document.createElement("span");
       quantity.className = "counter__value";
-      quantity.textContent = getProductQuantity(item.id);
+      quantity.textContent = item.quantity;
 
       const plusBtn = document.createElement("button");
       plusBtn.className = "counter__btn";
       plusBtn.type = "button";
       plusBtn.textContent = "+";
-      plusBtn.dataset.action = "increase-card";
+      plusBtn.dataset.action = "increase-cart";
       plusBtn.dataset.productId = item.id;
 
       plusBtn.setAttribute("aria-label", "Увеличить кол-во: " + item.name);
@@ -391,7 +391,7 @@ function addToCart(productId) {
       id: product.id,
       name: product.name,
       price: product.price,
-      quantity: getProductQuantity(productId),
+      quantity: quantity,
       selected: true,
     });
   }
@@ -452,10 +452,10 @@ cartList.addEventListener("click", (event) => {
   if (!Number.isInteger(productId)) {
     return;
   }
-  if (action === "decrease-card") {
+  if (action === "decrease-cart") {
     changeCartQuantity(productId, -1);
   }
-  if (action === "increase-card") {
+  if (action === "increase-cart") {
     changeCartQuantity(productId, 1);
   }
   if (action === "remove-card") {
