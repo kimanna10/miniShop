@@ -92,6 +92,14 @@ const clearCartBtn = document.querySelector("#clearCart");
 const removeSelectedBtn = document.querySelector("#removeSelected");
 const checkoutBtn = document.querySelector("#checkoutBtn");
 
+const checkoutDialog = document.querySelector("#checkoutDialog");
+const closeCheckoutBtn = document.querySelector("#closeCheckoutBtn");
+const checkoutContent = document.querySelector("#checkoutContent");
+const checkoutItems = document.querySelector("#checkoutItems");
+const checkoutTotal = document.querySelector("#checkoutTotal");
+const backToCart = document.querySelector("#backToCart");
+const submitOrder = document.querySelector("#submitOrder");
+
 const selectAllCheckbox = document.querySelector("#selectAll");
 
 // Функция для форматирования цены
@@ -136,6 +144,7 @@ function changeCartQuantity(productId, change) {
     const isConfirmed = confirm("Удалить товар из корзины?");
     if (isConfirmed) {
       // фунция удаления товара из корзины
+      removeFromCart(productId);
     }
     return;
   }
@@ -157,7 +166,7 @@ function getSelectedQuantity() {
   }, 0);
 }
 
-// Получить полная стоимость всей корзины
+// Получить полную стоимость всей корзины
 function getSelectedTotal() {
   return getSelectedItems().reduce((sum, item) => {
     return sum + item.price * item.quantity;
@@ -367,7 +376,6 @@ function renderCart() {
   }
   updateCartTotal();
 }
-
 function addToCart(productId) {
   const product = products.find((item) => {
     return item.id === productId;
@@ -399,7 +407,80 @@ function addToCart(productId) {
   // отрисовываем корзину
   renderCart();
 }
+function removeFromCart(productId) {
+  cart = cart.filter((item) => {
+    return item.id !== productId;
+  });
 
+  renderCart();
+}
+function clearCart() {
+  if (cart.length === 0) {
+    return;
+  }
+
+  const isConfirmed = confirm("Удалить все товары из корзины?");
+  if (isConfirmed) {
+    cart = [];
+    renderCart();
+  }
+}
+function removeSelectedItems() {
+  const selectedItems = getSelectedItems();
+  if (selectedItems.length === 0) {
+    return;
+  }
+  const isConfirmed = confirm("Удалить все выбранные товары из корзины?");
+  if (isConfirmed) {
+    cart = cart.filter((item) => {
+      return !item.selected;
+    });
+    renderCart();
+  }
+}
+function renderCheckoutItems() {
+  checkoutItems.replaceChildren();
+  const selectedItems = getSelectedItems();
+
+  selectedItems.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "checkout-item";
+
+    const title = document.createElement("span");
+    title.textContent = item.name + " x " + item.quantity;
+
+    const price = document.createElement("strong");
+    price.textContent = formatPrice(item.price * item.quantity);
+
+    card.append(title, price);
+    checkoutItems.append(card);
+  });
+  checkoutTotal.textContent = formatPrice(getSelectedTotal());
+}
+
+function openCheckout() {
+  const selectedItems = getSelectedItems();
+  if (selectedItems.length === 0) {
+    return;
+  }
+
+  renderCheckoutItems();
+
+  checkoutDialog.showModal();
+}
+
+function successOrder() {
+  closeCheckout();
+  cart = cart.filter((item) => {
+    return !item.selected;
+  });
+  renderCart();
+  alert("Спасибо за заказ!");
+}
+
+function closeCheckout() {
+  checkoutDialog.close();
+}
 // Функции для карточки товара
 productsList.addEventListener("click", (event) => {
   const btn = event.target.closest("[data-action]");
@@ -460,9 +541,16 @@ cartList.addEventListener("click", (event) => {
   }
   if (action === "remove-card") {
     // удаление товара из корзины
+    const isConfirmed = confirm("Удалить товар из корзины?");
+    if (isConfirmed) {
+      // фунция удаления товара из корзины
+      removeFromCart(productId);
+    }
   }
 });
 
+clearCartBtn.addEventListener("click", clearCart);
+removeSelectedBtn.addEventListener("click", removeSelectedItems);
 selectAllCheckbox.addEventListener("change", () => {
   cart.forEach((item) => {
     item.selected = selectAllCheckbox.checked;
@@ -470,5 +558,9 @@ selectAllCheckbox.addEventListener("change", () => {
   renderCart();
 });
 
+checkoutBtn.addEventListener("click", openCheckout);
+closeCheckoutBtn.addEventListener("click", closeCheckout);
+backToCart.addEventListener("click", closeCheckout);
+submitOrder.addEventListener("click", successOrder);
 // Запускаем проект
 renderProducts();

@@ -83,5 +83,27 @@
         </div>
       </section>
     </main>
+
+    <dialog id="checkoutDialog" class="modal modal-checkout">
+      <div class="modal-card">
+        <button class="modal-card__close" type="button" id="closeCheckoutBtn">
+          x
+        </button>
+        <div id="checkoutContent">
+          <h2>Оформить заказ</h2>
+          <div id="checkoutItems"></div>
+
+          <div>
+            <span>Итого:</span>
+            <strong id="checkoutTotal">0</strong>
+          </div>
+
+          <div>
+            <button type="button" id="backToCart">Назад</button>
+            <button type="button" id="submitOrder">Подтвердить заказ</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
